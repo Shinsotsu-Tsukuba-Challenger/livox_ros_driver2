@@ -91,7 +91,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   set(CMAKE_CXX_EXTENSIONS OFF)
 
   ## make sure the livox_lidar_sdk_static library is installed
-  find_library(LIVOX_LIDAR_SDK_LIBRARY livox_lidar_sdk_shared)
+  find_library(LIVOX_LIDAR_SDK_LIBRARY  liblivox_lidar_sdk_static.a    /usr/local/lib)
 
   ## PCL library
   link_directories(${PCL_LIBRARY_DIRS})
@@ -158,7 +158,6 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   #---------------------------------------------------------------------------------------
   target_link_libraries(${PROJECT_NAME}_node
     ${LIVOX_LIDAR_SDK_LIBRARY}
-    livox_lidar_sdk_shared
     ${Boost_LIBRARY}
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES}
@@ -224,7 +223,6 @@ else($ENV{ROS_VERSION} STREQUAL "2")
   # find_package(<dependency> REQUIRED)
   find_package(ament_cmake_auto REQUIRED)
   ament_auto_find_build_dependencies()
-  find_package(livox_sdk2_vendor REQUIRED)
   find_package(PCL REQUIRED)
   find_package(std_msgs REQUIRED)
   find_package(builtin_interfaces REQUIRED)
@@ -248,7 +246,7 @@ else($ENV{ROS_VERSION} STREQUAL "2")
   )
 
   ## make sure the livox_lidar_sdk_shared library is installed
-  find_library(LIVOX_LIDAR_SDK_LIBRARY livox_lidar_sdk_shared PATHS ${livox_sdk2_vendor_LIBRARY_DIRS} REQUIRED)
+  find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so /usr/local/lib REQUIRED)
 
   ##
   find_path(LIVOX_LIDAR_SDK_INCLUDE_DIR
@@ -307,7 +305,6 @@ else($ENV{ROS_VERSION} STREQUAL "2")
   # link libraries
   target_link_libraries(${PROJECT_NAME}
     ${LIVOX_LIDAR_SDK_LIBRARY}
-    livox_lidar_sdk_shared
     ${LIVOX_INTERFACE_TARGET}   # for custom msgs
     ${PPT_LIBRARY}
     ${Boost_LIBRARY}
